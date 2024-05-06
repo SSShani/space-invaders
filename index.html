@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Invaders</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body onload="init()" onkeyup="onKeyDown(event)">
+    
+<div class="header">
+    <div class="game-info">
+        <h1 class="score">Score: <span>0</span></h1>
+        <h1 class="level">Level: <span>Easy</span></h1>
+    </div>
+    <div class="levels">
+        <button class="level-btn" onclick="changeSpeed(this)">Easy</button>
+        <button class="level-btn" onclick="changeSpeed(this)">Medium</button>
+        <button class="level-btn" onclick="changeSpeed(this)">Hard</button>
+    </div>
+</div>
+
+    <table class="board-container"  >
+        <tbody>
+        </tbody>
+    </table>
+    
+    <div class="restart">
+        <button class="restart-btn" onclick="startGame(this)">Start</button>
+    </div>
+
+<div class="footer">
+    <h1>Keys</h1>
+    <span>S = Shoot</span>
+    <span>Arrows = Right/Left</span>
+    <span>X = Super Mode</span>
+</div>
+
+    <script src="js/util.js"></script>
+    <script src="js/alien.js"></script>
+    <script src="js/hero.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
