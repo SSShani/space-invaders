@@ -5,7 +5,14 @@
     width: 100vw; 
     height: 100vh; }
 
-.ground {
+.BOTTOM {
     background-color: red;
 
+}
+
+td {
+    width: 30px; /* כאן תשנה את הערך לפי הגודל הרצוי של התא */
+    height: 30px; /* גם כאן תשנה את הערך לפי הגודל הרצוי של התא */
+    text-align: center; /* למרכז את הטקסט בתוך התא */
+    vertical-align: middle; /* למרכז את הטקסט אנכית בתוך התא */
 }

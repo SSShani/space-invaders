@@ -19,7 +19,13 @@ function createAliens(board) {
     }}
     // console.log('createAliens ')
 } 
-function handleAlienHit(pos) {} 
+
+
+function handleAlienHit(pos) {
+
+
+    
+} 
 function shiftBoardRight(board, fromI, toI) {} 
 function shiftBoardLeft(board, fromI, toI) {} 
 function shiftBoardDown(board, fromI, toI) {} 

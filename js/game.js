@@ -34,12 +34,9 @@ function renderBoard(board) {
         strHTML += '<tr>'
         for (var j = 0; j < BOARD_SIZE; j++) {
             var cell = board[i][j]
-            if (cell.type==BOTTOM){
-                strHTML += '<td class="ground"> </td>';
-            }
-            else{
-            strHTML += `<td>${cell.gameObject}</td>`
-            }
+            var cellClass = cell.type
+            strHTML += `<td class="${cellClass}" data-i="${i}" data-j="${j}">${cell.gameObject || "" }</td>`;
+
         }
         strHTML += '</tr>'
     }
@@ -47,20 +44,18 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML
 }
  
-// if (cell.gameObject === null) {
-//     strHTML += '<td class="null"></td>';
-// } else {
-//     strHTML += `<td>${cell.gameObject}</td>`;
 
- 
 
 
 // position such as: {i: 2, j: 7} 
 function updateCell(pos, gameObject = null) { 
     gBoard[pos.i][pos.j].gameObject = gameObject 
     var elCell = getElCell(pos) 
-    elCell.innerHTML = gameObject || '' 
+    elCell.innerHTML = gameObject || "" 
 }
+
+
+
 
 
 function createBoard( ) {
@@ -82,33 +77,3 @@ function createCell(type=SKY,gameObject = null) {
 } 
 
 
-
-
-function onKeyDown(ev) {
-    console.log('key pressed:', ev.key)
-
-    if (!gGame.isOn) return
-
-    switch (ev.key) {
-        case 'ArrowLeft':
-            moveHero(-1) // Move left
-            break;
-        case 'ArrowRight':
-            moveHero(1) // Move right
-            break;
-        case ' ':
-            shoot() // Shoot laser
-            break;
-        case 'n':
-            blowUpNeighbors() // Blow up alien neighbors
-            break;
-        case 'x':
-            fasterLaser()
-            break;
-        case 'z':
-            activateShield()
-            break;
-        default:
-            break;
-    }
-}
