@@ -1,137 +1,114 @@
-"use strict";
-const BOARD_SIZE = 14;
-const ALIEN_ROW_LENGTH = 8;
-const ALIEN_ROW_COUNT =2;
-const HERO = "🛸";
-const ALIEN = "👽";
-const LASER = "⤊";
-const EXPLOSION = '💥'
-const CANDY = '🍭'
-const ROCK = '🪨'
-var gCandyInterval;
-
+const BOARD_SIZE = 14 
+const ALIEN_ROW_LENGTH = 8 
+const ALIEN_ROW_COUNT = 3 
+ 
+const HERO = '♆' 
+const ALIEN = '👽' 
+const LASER = '⤊' 
 var gBoard;
-var gGame = {
-  isOn: false,
-  alienCount: ALIEN_ROW_LENGTH * ALIEN_ROW_COUNT,
-  score:0,
-  isSuperMode:false
-};
-function init() {
-  gBoard = createBoard();
-  createHero(gBoard);
-  createAliens(gBoard);
-  renderBoard(gBoard);
-  createBunkers(5)
+const SKY = "SKY"
+const BOTTOM="BOTTOM"
+
+
+function init(){
+    console.log('init ')
+ gBoard =createBoard( )
+ createAliens(gBoard);
+createHero(gBoard)
+renderBoard(gBoard)
+console.table(gBoard)
 }
-function createBoard() {
-  const board = [];
-  for (let i = 0; i < BOARD_SIZE; i++) {
-    board[i] = [];
-    for (let j = 0; j < BOARD_SIZE; j++) {
-      var type = (i === BOARD_SIZE-1) ? 'ground':'sky'
-        board[i][j] = createCell('',type);
-    }
-  }
-console.log(board);
-  return board;
-}
+
+var gGame = { 
+    isOn: false, 
+    alienCount: 0 
+} 
+ 
+
+ 
+// Render the board as a <table> to the page 
 function renderBoard(board) {
-  const elContainer = document.querySelector(".board-container");
-  var strHtml = "";
-  for (let i = 0; i < board.length; i++) {
-    strHtml += "<tr>";
-    for (let j = 0; j < board[0].length; j++) {
-      const cell = gBoard[i][j];
-      var cellClass = (cell.type === 'ground') ? 'cell ground' : 'cell'
-      strHtml += `<td class="${cellClass}" data-i="${i}" data-j="${j}">${cell.gameObject}</td>`;
+    console.log('renderBoard ')
+    var strHTML = ''
+    for (var i = 0; i < BOARD_SIZE; i++) {
+        strHTML += '<tr>'
+        for (var j = 0; j < BOARD_SIZE; j++) {
+            var cell = board[i][j]
+            if (cell.type==BOTTOM){
+                strHTML += '<td class="ground"> </td>';
+            }
+            else{
+            strHTML += `<td>${cell.gameObject}</td>`
+            }
+        }
+        strHTML += '</tr>'
     }
-    strHtml += "</tr>";
-  }
-  elContainer.innerHTML = strHtml;
+    const elBoard = document.querySelector('tbody.board')
+    elBoard.innerHTML = strHTML
 }
-function createCell(gameObject = null,type ='sky') {
-  return {
-    type: type,
-    gameObject: gameObject,
-  };
-}
-function updateCell(pos, gameObject = null,type='sky') {
-  gBoard[pos.i][pos.j].gameObject = gameObject;
-  gBoard[pos.i][pos.j].type = type;
-  var elCell = getElCell(pos);
-  elCell.innerHTML = gameObject || "";
-}
+ 
+// if (cell.gameObject === null) {
+//     strHTML += '<td class="null"></td>';
+// } else {
+//     strHTML += `<td>${cell.gameObject}</td>`;
 
-function updateScore(diff = 0){
-  const elScore = document.querySelector('.score span')
-  if(gGame.isOn) gGame.score += diff
-  else gGame.score = 0
-  elScore.innerText = gGame.score
-}
+ 
 
-function startGame(elBtn){
-  if(elBtn.innerText === 'Restart'){
-    initGameProperties()
-    elBtn.innerText = 'Start'
-    init()
-    return
-  }
-  gGame.isOn = true
-  elBtn.innerText = 'Restart'
-  playSound('background')
-  moveAliens()
-  setTimeout(() => {
-    AliensShoot()  
-  }, 700);
-  
+
+// position such as: {i: 2, j: 7} 
+function updateCell(pos, gameObject = null) { 
+    gBoard[pos.i][pos.j].gameObject = gameObject 
+    var elCell = getElCell(pos) 
+    elCell.innerHTML = gameObject || '' 
 }
 
 
-function initGameProperties(){
-  clearInterval(gIntervalAliens)
-  clearInterval(gCandyInterval)
-  clearInterval(gLaserInterval)
-  gGame.isOn = false
-  gGame.alienCount = 0
-  gGame.isSuperMode = false
-  gGame.score = 0
+function createBoard( ) {
+    var board=createMat(BOARD_SIZE,BOARD_SIZE)
+    for (var i = 0; i < board.length; i++) {
+        for (var j = 0; j < board.length; j++) {
+            var type = (i === BOARD_SIZE-1) ? BOTTOM:SKY
+            board[i][j] = createCell(type,null);
+        }
+    }
+return board
 }
 
-function gameOver(isWin){
-  initGameProperties()
-  var soundToPlay = (!isWin) ? 'gameOver' : 'victory'
-  playSound(soundToPlay)
-  stopBackgroundSoundSound()
-  
+function createCell(type=SKY,gameObject = null) { 
+    return { 
+        type:type,
+        gameObject: gameObject 
+    } 
+} 
+
+
+
+
+function onKeyDown(ev) {
+    console.log('key pressed:', ev.key)
+
+    if (!gGame.isOn) return
+
+    switch (ev.key) {
+        case 'ArrowLeft':
+            moveHero(-1) // Move left
+            break;
+        case 'ArrowRight':
+            moveHero(1) // Move right
+            break;
+        case ' ':
+            shoot() // Shoot laser
+            break;
+        case 'n':
+            blowUpNeighbors() // Blow up alien neighbors
+            break;
+        case 'x':
+            fasterLaser()
+            break;
+        case 'z':
+            activateShield()
+            break;
+        default:
+            break;
+    }
 }
-
-function candyAppear(){
-  var randomInt=getRandomInt(0,gBoard[0].length-1)
-  var candyPos = {i:0,j:randomInt}
-  updateCell(candyPos,CANDY)
-  setTimeout(() => {
-    updateCell(candyPos,'')
-  }, 5000);
-}
-
-function superMode(){
-  gGame.isSuperMode = true
-  setTimeout(() => {
-    gGame.isSuperMode = false
-  }, 3000);
-}
-
-
-function createBunkers(size){
-  for (let j = 1; j < size; j++) {
-    updateCell({i:11,j:j},'','ground')
-    const elCell = document.querySelector(`td.cell[data-i="11"][data-j="${j}"]`);
-    elCell.classList.add('ground');
-  }
-}
-
-
-
-
-
