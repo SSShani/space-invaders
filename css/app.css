@@ -16,3 +16,74 @@ td {
     text-align: center; /* למרכז את הטקסט בתוך התא */
     vertical-align: middle; /* למרכז את הטקסט אנכית בתוך התא */
 }
+
+
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(181, 10, 10, 0.968);
+        z-index: 9999;
+        width: 300px;
+        height: 200px;
+        border-radius: 10px;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgb(179, 7, 7);
+        z-index: 9999;
+        width: 300px;
+        height: 200px;
+        border-radius: 10px;
+    }
+    
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .button:hover {
+        background-color: #45a049;
+    }
+    
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    .button:hover {
+        background-color: #45a049;
+    }
+    

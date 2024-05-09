@@ -10,10 +10,27 @@
 
 	<body onload="init()" onkeydown="onKeyDown(event)">
 
+		<div class="game-info">
+			<h1 class="score">Score: <span>0</span></h1>
+			<!-- <h1 class="level">Level: <span>Easy</span></h1> -->
+		</div>
+
+		<div class="modal">
+			<p></p>
+			<button class="button" onclick="restartGame()">Go for another round!</button>
+		  </div>
+
+		  <div >
+			<button class="button" onclick="testt()">Test</button>
+		  </div>
+
 		<table class="board-container">
 			<tbody class="board"></tbody>
 			</table>
 		
+			
+
+
 		<script src="js/utils.js"></script>
 		<script src="js/alien.js"></script>
 		<script src="js/hero.js"></script>

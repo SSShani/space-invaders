@@ -24,7 +24,7 @@ function onKeyDown(ev) {
         case 'ArrowRight':
             moveHero(1) // Move right
             break;
-        case "s":
+        case " ":
                 shoot()
                 break;
         default:
@@ -50,6 +50,7 @@ function moveHero(dir) {
 //  
 function shoot() {
     // if (gGame.isOn&& !gHero.isShoot) 
+      if(gHero.isShoot)return
         console.log('shoot')
         gHero.isShoot = true;
         var laserPos = { i: gHero.pos.i, j: gHero.pos.j };

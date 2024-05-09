@@ -14,6 +14,7 @@ function createAliens(board) {
     for (var j = 0; j < ALIEN_ROW_COUNT; j++){
     for (var i = 0; i < ALIEN_ROW_LENGTH; i++) {
         board[j][i].gameObject=ALIEN
+        gGame.alienCount++
         // createCell(HERO)
         // console.log(board[j][i].gameObject)
     }}
@@ -23,9 +24,37 @@ function createAliens(board) {
 
 function handleAlienHit(pos) {
 
+  var upScore
+    // if (target === ALIEN) {
+       upScore = 10;
+       gGame.alienCount--
+    // } else {
+    //  var upScore = 50;
+    //   gIsAlienFreeze = true;
+    //   setTimeout(() => {
+    //     gIsAlienFreeze = false;
+    //   }, 5000);
+    // }
+  
+    // playSound("hit");
+    updateScore(upScore);
+    updateCell(pos, EXPLOSION);
+    setTimeout(() => {
+      updateCell(pos);
+    }, 150);
 
-    
+    if(gGame.alienCount==0)GameOver(true)
 } 
+
+
+
+function updateScore(upScore){
+  const elScore = document.querySelector('.score span')
+ gGame.score += upScore
+  elScore.innerText = gGame.score
+}
+
+
 function shiftBoardRight(board, fromI, toI) {} 
 function shiftBoardLeft(board, fromI, toI) {} 
 function shiftBoardDown(board, fromI, toI) {} 
