@@ -1,10 +1,10 @@
 const BOARD_SIZE = 14
 const ALIEN_ROW_LENGTH = 8
-const ALIEN_ROW_COUNT = 3
+var ALIEN_ROW_COUNT = 3
 
-const HERO = '♆'
+const HERO = '🛸'
 const ALIEN = '👽'
-const LASER = '⤊'
+const LASER = '📍'
 const SUPERLASER= '🔥'
 const EXPLOSION = '💥'
 const CANDY = '🍭'
@@ -135,14 +135,49 @@ function startGame(elBtn){
     // elBtn.innerText = 'Restart'
     moveAliens()
  }
-  
 
+
+ function changeSpeed(elBtn) {
+    var level = elBtn.innerText;
+    console.log(level);
+    switch (level) {
+      case "Medium":
+        MediumLevel();
+        break;
+      case "Easy":
+        LowLevel();
+        break;
+        case "Hard":
+            HighLevel();
+            break;
+      default:
+        MediumLevel();
+        break;
+    }
+    // const elLevel = document.querySelector(".level span");
+    // elLevel.innerText = level;
+  }
+  function MediumLevel(){
+    ALIEN_SPEED = 500;
+    ALIEN_ROW_COUNT=3
+    createAliens(gBoard)
+  }
+
+  function  HighLevel(){
+    ALIEN_SPEED = 800;
+    ALIEN_ROW_COUNT=4
+
+    gAliensBottomRowIdx=3
+    init()
+    // createAliens(gBoard)
+  }
+
+  function LowLevel(){
+    ALIEN_SPEED = 300;
+    ALIEN_ROW_COUNT=2
+    gAliensBottomRowIdx=1
+    createAliens(gBoard)
+  }
 function test1(){
-    moveAliens()
-}
-function test2(){
-    shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
-}
-function test3(){
-shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
+    gIsAlienFreeze = true;
 }

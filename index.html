@@ -27,13 +27,23 @@
 
 
 
-		  <div >
-			
+		  <!-- <div >
 			<button class="button" onclick="test1()">Test1</button>
 			<button class="button" onclick="test2()">Test2</button>
-			<button class="button" onclick="test3()">Test3</button>
-		  </div>
-		  test2
+		  </div> -->
+		
+		  <div class="levels">
+			<button class="level-btn" onclick="changeSpeed(this)">Easy</button>
+			<button class="level-btn" onclick="changeSpeed(this)">Medium</button>
+			<button class="level-btn" onclick="changeSpeed(this)">Hard</button>
+		</div>
+		<div class="footer">
+		<span>🛸:  Right/Left            | </span>
+			<span>Space:  Shoot 💥           |</span>
+			<span>N:  blast neighbors 💥💥        |</span>
+			<span>X:  Super Mode 🔥           |</span>
+		</div>
+
 		<table class="board-container">
 			<tbody class="board"></tbody>
 			</table>

@@ -1,4 +1,4 @@
-const ALIEN_SPEED = 500 
+var ALIEN_SPEED = 500 
 var gIntervalAliens
 var DIRECTION = 'RIGHT'
 var shouldMoveDown = false
@@ -44,7 +44,7 @@ function handleAlienHit(pos,Obj) {
        gGame.alienCount--
     } else {
       upScore = 50;
-      gIsAlienFreefalseze = true;
+      gIsAlienFreeze = true;
       setTimeout(() => {
         gIsAlienFreeze = false;
       }, 5000);
@@ -168,7 +168,7 @@ function moveAliens() {
 }
 
 function moveDirectionHandler(){
-  // if (  gIsAlienFreeze ) return
+  if (  gIsAlienFreeze ) return
   if(alienXBounds.ifToDown )shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
     else{
          if(alienXBounds.ifToRight ) shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
