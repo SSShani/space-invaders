@@ -5,11 +5,15 @@ const ALIEN_ROW_COUNT = 3
 const HERO = '♆'
 const ALIEN = '👽'
 const LASER = '⤊'
+const SUPERLASER= '🔥'
 const EXPLOSION = '💥'
+const CANDY = '🍭'
 var gBoard;
 const SKY = "SKY"
 const BOTTOM = "BOTTOM"
 
+var gAliensTopRowIdx=0
+var gAliensBottomRowIdx =ALIEN_ROW_COUNT-1
 
 function init() {
     console.log('init ')
@@ -24,7 +28,9 @@ function init() {
 var gGame = {
     isOn: false,
     alienCount: 0,
-    score: 0
+    score: 0,
+    blowUpNeighborsisOn:false,
+    isSuperMode:false
 }
 
 
@@ -75,6 +81,8 @@ function createCell(type = SKY, gameObject = null) {
     }
 }
 function GameOver(gameResult = false) {
+    clearInterval(gIntervalAliens)
+    clearInterval(gCandyInterval)
     console.log('GameOver', gameResult)
     document.querySelector('.modal').style.display = "block"
     gGame.isOn = false
@@ -96,17 +104,45 @@ function restartGame() {
     document.querySelector('.modal').style.display = "none"
     gGame.alienCount = 0
     restartScore()
+    restartalienXBounds()
     init()
 
 }
 
-function testt(){
-GameOver(true)
-}
+
 
 function restartScore(){
     gGame.score = 0
     const elScore = document.querySelector('.score span')
      elScore.innerText = gGame.score
 
+}
+
+function startGame(elBtn){
+    // if(elBtn.innerText === 'Restart'){
+    //   initGameProperties()
+    //   elBtn.innerText = 'Start'
+    //   GameOver()
+    elBtn.removeAttribute("onclick");
+    elBtn.disabled = true;
+      init()
+    // //   return
+    // // }
+    gGame.isOn = true
+    gIsAlienFreeze=false
+
+      
+    // elBtn.innerText = 'Restart'
+    moveAliens()
+ }
+  
+
+function test1(){
+    moveAliens()
+}
+function test2(){
+    shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
+}
+function test3(){
+shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
 }

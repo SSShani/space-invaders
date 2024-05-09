@@ -15,6 +15,9 @@ function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`);
   }
 
+  function getRandomInt(x, y) {
+    return Math.floor(Math.random() * (y - x + 1)) + x;
+}
 
 
 
@@ -49,7 +52,7 @@ function countNeighbors(rowIdx, colIdx, mat) {
     }
     return neighborsCount}
 
-    function createMat(ROWS, COLS) {
+ function createMat(ROWS, COLS) {
         const mat = []
         for (var i = 0; i < ROWS; i++) {
             const row = []
