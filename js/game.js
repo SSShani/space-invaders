@@ -4,10 +4,11 @@ var ALIEN_ROW_COUNT = 3
 
 const HERO = '🛸'
 const ALIEN = '👽'
-const LASER = '📍'
+const LASER = ' 📍'
 const SUPERLASER= '🔥'
 const EXPLOSION = '💥'
 const CANDY = '🍭'
+const ROCK ='❄️'
 var gBoard;
 const SKY = "SKY"
 const BOTTOM = "BOTTOM"
@@ -83,6 +84,8 @@ function createCell(type = SKY, gameObject = null) {
 function GameOver(gameResult = false) {
     clearInterval(gIntervalAliens)
     clearInterval(gCandyInterval)
+    clearInterval(gIntervalAliens)
+    
     console.log('GameOver', gameResult)
     document.querySelector('.modal').style.display = "block"
     gGame.isOn = false
@@ -119,20 +122,12 @@ function restartScore(){
 }
 
 function startGame(elBtn){
-    // if(elBtn.innerText === 'Restart'){
-    //   initGameProperties()
-    //   elBtn.innerText = 'Start'
-    //   GameOver()
     elBtn.removeAttribute("onclick");
     elBtn.disabled = true;
       init()
-    // //   return
-    // // }
+     
     gGame.isOn = true
     gIsAlienFreeze=false
-
-      
-    // elBtn.innerText = 'Restart'
     moveAliens()
  }
 

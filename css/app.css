@@ -9,6 +9,9 @@
     background-color: rgba(9, 13, 95, 0.212);
 
 }
+.game-info{
+    color: white; 
+}
 body {
     background-image: url('../img/space.jpg');
 }
@@ -54,12 +57,12 @@ td {
         top: 20px;
         left: 50%;
         transform: translateX(-50%);
-    
 }
 
 .footer span {
     margin-bottom: 10px;
-    font-size: 16px;
+    font-size: 21px;
+        margin-bottom: 10px;
 }
 
 .footer span:not(:last-child) {

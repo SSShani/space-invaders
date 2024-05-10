@@ -1,5 +1,6 @@
 const LASER_SPEED = 80 
-var gHero = {pos: {i:12, j: 5}, isShoot: false} 
+var gHero = {pos: {i:12, j: 5}, isShoot: false,live:3} 
+var SuperModecount=3;
  
 function createHero(board) {
     // console.log('createHero ')
@@ -66,6 +67,7 @@ else{
         gLaserInterval = setInterval(() => {
           blinkLaser(laserPos);
         }, 200);}
+        // gGame.isSuperMode=false
 }  }
  
 function blinkLaser(pos) {
@@ -74,6 +76,7 @@ function blinkLaser(pos) {
     
     if (!nextPos.i || nextCell === ALIEN) {
       clearInterval(gLaserInterval);//stop
+      gGame.isSuperMode=false
       gHero.isShoot = false;
       updateCell(pos);
       if (!pos.i) return;
@@ -93,7 +96,7 @@ function blinkLaser(pos) {
       --pos.i;
       if(gGame.isSuperMode){
         updateCell(pos,SUPERLASER )
-        gGame.isSuperMode=false
+        // gGame.isSuperMode=false
       }else
       updateCell(pos, LASER);
     }
@@ -120,8 +123,29 @@ function blowUpNeighbors(Pos){
 
 function SuperMode()
 {
+ 
+  if( SuperModecount==0)return
   gGame.isSuperMode=true
   shoot()
-  
-
+  updateSuperModecount()
 }
+  
+  function updateSuperModecount(){
+    SuperModecount--
+    var Text
+    const elCount = document.querySelector('.SuperMode ')
+    // for(var i=0;i<SuperModecount;i++){
+    //   Text -= '🔥'}
+      elCount.innerText=SuperModecount
+  }
+
+  function  handleHeroCollision(pos){
+    if( gHero.live==0)
+      GameOver()
+    else{
+      gHero.live--
+      console.log('live:',gHero.live)
+      updateCell(pos,HERO)
+    }
+
+  }

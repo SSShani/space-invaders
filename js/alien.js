@@ -4,7 +4,8 @@ var DIRECTION = 'RIGHT'
 var shouldMoveDown = false
 var gIsAlienFreeze = false 
 var gCandyInterval;
- 
+ var gAliensRockInterval
+ var gIntervalRocks
 var alienXBounds = {
   ifToRight: true,
   ifToDown:false,
@@ -165,6 +166,9 @@ function moveAliens() {
     moveDirectionHandler()
   }, ALIEN_SPEED);
 
+  gIntervalRocks=setInterval(() => {
+    throwRocks()  
+  },4000);
 }
 
 function moveDirectionHandler(){
@@ -185,4 +189,65 @@ function candyAppear(){
   setTimeout(() => {
     updateCell(candyPos,'')
   }, 5000);
+}
+
+
+
+
+function throwRocks() {
+  var pos = getAlienPos(gBoard);
+
+ gAliensRockInterval  = setInterval(() => {
+    console.log('nnn')
+    pos.i++;
+    blinkRock(pos);
+  }, 400);
+}
+
+function blinkRock(pos) {
+  if (!pos || pos.i + 1 === gBoard.length - 1 || gBoard[pos.i + 1][pos.j].type === "BOTTOM") {
+    clearInterval(gAliensRockInterval);
+    updateCell(pos);
+    // if (pos.i + 1 === gBoard.length - 1) {
+      // updateCell({ pos });
+    // }
+    // console.log('hero?')
+    // handleHeroCollision(pos)
+    return;
+  }
+  var nextPos = { i: pos.i + 1, j: pos.j };
+  if (gBoard[pos.i][pos.j].gameObject === HERO) {
+    console.log("game over");
+    stopRockBlinking();
+    updateCell(nextPos, ROCK);
+    updateCell(pos);
+    handleHeroCollision(pos)
+    GameOver();
+    return;
+  } 
+  if (gBoard[pos.i][pos.j].gameObject === ALIEN) {
+    updateCell(nextPos, ROCK);
+  } else {
+    updateCell(nextPos, ROCK);
+    updateCell(pos);
+  }
+  updateCell(pos);
+}
+
+
+
+
+function getAlienPos(board) {
+  const aliensPoses = [];
+
+  for (let j = 0; j < board[gAliensBottomRowIdx].length; j++) {
+    const cell = board[gAliensBottomRowIdx][j];
+  
+    if (cell.gameObject === ALIEN) {
+      aliensPoses.push({ i: gAliensBottomRowIdx, j: j });
+    }
+  }
+  
+  var randomIdx = getRandomInt(0, aliensPoses.length - 1);
+  return aliensPoses[randomIdx];
 }
