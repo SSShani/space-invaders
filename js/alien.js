@@ -6,6 +6,13 @@ var gIsAlienFreeze = false
 var gCandyInterval;
  var gAliensRockInterval
  var gIntervalRocks
+
+//  const ALIEN = {
+//   1:'👽',
+// 2:'👻',
+// 3:'👾',
+// 4:' 👹'}
+
 var alienXBounds = {
   ifToRight: true,
   ifToDown:false,
@@ -88,7 +95,7 @@ function updateScore(upScore){
 }
 
 function shiftBoardDown(board, fromI, toI) {
-  if(toI==11){
+  if(toI==11||toI==10 ){
     GameOver()
     return}
 
@@ -140,7 +147,10 @@ function shiftBoardLeft(board, fromI, toI) {
       for (var j = 0; j < BOARD_SIZE - 1; j++) {
         console.log( ' shiftBoardLeft')
         if(board[i][j + 1].gameObject==null||board[i][j+1 ].gameObject==ALIEN)
-          board[i][j] = board[i][j + 1];
+          // board[i][j] = board[i][j + 1];
+
+       { board[i][j].type = board[i][j + 1].type;
+        board[i][j].gameObject = board[i][j + 1].gameObject;}
     
       board[i][BOARD_SIZE - 1] = createCell()
   }}
@@ -166,9 +176,7 @@ function moveAliens() {
     moveDirectionHandler()
   }, ALIEN_SPEED);
 
-  gIntervalRocks=setInterval(() => {
-    throwRocks()  
-  },4000);
+ 
 }
 
 function moveDirectionHandler(){
@@ -193,46 +201,121 @@ function candyAppear(){
 
 
 
-
 function throwRocks() {
   var pos = getAlienPos(gBoard);
-
- gAliensRockInterval  = setInterval(() => {
-    console.log('nnn')
-    pos.i++;
+  // blinkRock(pos);
+  gIntervalRocks  = setInterval(() => {
+    console.log('throwRocks')
+    // pos = { i: pos.i + 1, j: pos.j };
     blinkRock(pos);
   }, 400);
 }
 
+// function blinkRock(pos) {
+//   console.log("blinkRock" )
+//   if (!pos || gBoard[pos.i + 1][pos.j].type === "BOTTOM") {
+//     clearInterval(gAliensRockInterval);
+//     updateCell(pos);
+//     // if (pos.i + 1 === gBoard.length - 1) {
+//       // updateCell({ pos });
+//     // }
+//     // console.log('hero?')
+//     // handleHeroCollision(pos)
+//     return;
+//   }
+//   var nextPos = { i: pos.i + 1, j: pos.j };
+//   if (gBoard[pos.i][pos.j].gameObject === HERO) {
+//     InjuryToHero(pos, nextPos)
+//     return;
+//   } 
+//   if (gBoard[pos.i][pos.j].gameObject === ALIEN) {
+//     updateCell(nextPos, ROCK);
+//   }
+//    else {
+//     updateCell( { i: pos.i + 1, j: pos.j }, ROCK);
+//     updateCell(pos);
+//     console.log("-----------------")
+//   }
+//   updateCell(pos);
+// }
+
+
+
+
 function blinkRock(pos) {
-  if (!pos || pos.i + 1 === gBoard.length - 1 || gBoard[pos.i + 1][pos.j].type === "BOTTOM") {
-    clearInterval(gAliensRockInterval);
-    updateCell(pos);
-    // if (pos.i + 1 === gBoard.length - 1) {
-      // updateCell({ pos });
-    // }
-    // console.log('hero?')
-    // handleHeroCollision(pos)
-    return;
-  }
-  var nextPos = { i: pos.i + 1, j: pos.j };
-  if (gBoard[pos.i][pos.j].gameObject === HERO) {
-    console.log("game over");
-    stopRockBlinking();
-    updateCell(nextPos, ROCK);
-    updateCell(pos);
-    handleHeroCollision(pos)
-    GameOver();
-    return;
-  } 
-  if (gBoard[pos.i][pos.j].gameObject === ALIEN) {
-    updateCell(nextPos, ROCK);
-  } else {
-    updateCell(nextPos, ROCK);
-    updateCell(pos);
-  }
+  console.log("blinkRock" )
+const nextPos = { i: pos.i+ 1, j: pos.j };
+const nextType = gBoard[nextPos.i][nextPos.j].type
+const nextGameObject = gBoard[nextPos.i][nextPos.j].gameObject
+if (nextGameObject===HERO || nextType ===BOTTOM||nextType===BUNKER) {
+  clearInterval(gIntervalRocks);
   updateCell(pos);
+  if (nextType ===BOTTOM||nextType===BUNKER ) {//end
+    Bunkerhit(nextPos, nextType)
+    return;}
+
+  else if (nextGameObject===HERO) {
+    InjuryToHero(pos)
+    return
+    }
+
+} else {
+  if (pos.i !== gHero.pos.i) {
+    // if(pos.gameObject===null )
+      updateCell(pos);
+  pos.i++
+    updateCell(pos,ROCK);
 }
+}}
+
+
+function Bunkerhit(nextPos, nextType){
+  console.log( 'Bunkerhit')
+  if( nextType===BUNKER)
+    var elCell = getElCell(nextPos)
+  if (elCell) {
+    elCell.classList.add("Bunkerhit");
+  }
+    
+}
+
+
+
+
+
+
+
+
+function InjuryToHero(pos){
+  console.log("InjuryToHero");
+  clearInterval(gIntervalRocks)
+  if(gHero.live===0){
+    clearInterval(gAliensRockInterval)
+    updateCell(pos, EXPLOSION);
+    setTimeout(() => {
+      updateCell(pos);
+    }, 150);
+    GameOver()
+  }
+  else {
+    gHero.live--
+    console.log('live:', gHero.live)
+    // updateCell(pos, HERO)
+
+      const elLive = document.querySelector('.live span')
+     elLive.innerText = gHero.live
+    }
+
+  }
+
+ 
+
+
+
+
+
+
+
 
 
 
@@ -250,4 +333,15 @@ function getAlienPos(board) {
   
   var randomIdx = getRandomInt(0, aliensPoses.length - 1);
   return aliensPoses[randomIdx];
+}
+
+
+function isAlien(Obj ){
+  console.log('isAlien')
+  for (var j = 0; j < 4; j++){
+     var key = j;
+     Obj=ALIEN[key]
+     return true
+    }
+    return false
 }

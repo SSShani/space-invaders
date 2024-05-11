@@ -1,7 +1,6 @@
 const BOARD_SIZE = 14
 const ALIEN_ROW_LENGTH = 8
 var ALIEN_ROW_COUNT = 3
-
 const HERO = '🛸'
 const ALIEN = '👽'
 const LASER = ' 📍'
@@ -12,7 +11,7 @@ const ROCK ='❄️'
 var gBoard;
 const SKY = "SKY"
 const BOTTOM = "BOTTOM"
-
+const BUNKER='BUNKER'
 var gAliensTopRowIdx=0
 var gAliensBottomRowIdx =ALIEN_ROW_COUNT-1
 
@@ -22,6 +21,7 @@ function init() {
     createAliens(gBoard)
     console.log(gGame.alienCount)
     createHero(gBoard)
+    createBunkers()
     renderBoard(gBoard)
     console.table(gBoard)
 }
@@ -31,11 +31,15 @@ var gGame = {
     alienCount: 0,
     score: 0,
     blowUpNeighborsisOn:false,
-    isSuperMode:false
+    isSuperMode:false,
+    Sound:true
 }
-
-
-
+function startRocks(){
+    console.log('testt')
+gAliensRockInterval=setInterval(() => {
+    throwRocks()  
+  },5000);
+}
 // Render the board as a <table> to the page 
 function renderBoard(board) {
     console.log('renderBoard ')
@@ -84,8 +88,8 @@ function createCell(type = SKY, gameObject = null) {
 function GameOver(gameResult = false) {
     clearInterval(gIntervalAliens)
     clearInterval(gCandyInterval)
-    clearInterval(gIntervalAliens)
-    
+    clearInterval(gAliensRockInterval)
+    clearInterval(gIntervalRocks);
     console.log('GameOver', gameResult)
     document.querySelector('.modal').style.display = "block"
     gGame.isOn = false
@@ -122,6 +126,7 @@ function restartScore(){
 }
 
 function startGame(elBtn){
+    console.log('startt')
     elBtn.removeAttribute("onclick");
     elBtn.disabled = true;
       init()
@@ -129,6 +134,7 @@ function startGame(elBtn){
     gGame.isOn = true
     gIsAlienFreeze=false
     moveAliens()
+    startRocks()
  }
 
 
@@ -159,7 +165,7 @@ function startGame(elBtn){
   }
 
   function  HighLevel(){
-    ALIEN_SPEED = 800;
+    ALIEN_SPEED = 300;
     ALIEN_ROW_COUNT=4
 
     gAliensBottomRowIdx=3
@@ -168,11 +174,39 @@ function startGame(elBtn){
   }
 
   function LowLevel(){
-    ALIEN_SPEED = 300;
+    ALIEN_SPEED = 800;
     ALIEN_ROW_COUNT=2
     gAliensBottomRowIdx=1
-    createAliens(gBoard)
+    init()
   }
+
+
+//   function ChangeSound(){
+//     var audio = new Audio(
+// if (gGame.Sound){
+
+// }
+// gGame.Sound=!gGame.Sound
+
+//   }
+
+
+
+
+
 function test1(){
     gIsAlienFreeze = true;
 }
+
+
+var backgroundImageChanged = false;
+var changeBackgroundButton = document.getElementById("changeBackgroundButton");
+changeBackgroundButton.addEventListener("click", function() {
+    if (!backgroundImageChanged) {
+        document.body.style.backgroundImage = "url('../img/cpaselight.img')";
+        backgroundImageChanged = true;
+    } else {
+        document.body.style.backgroundImage = "url('../img/space.jpg')";
+        backgroundImageChanged = false;
+    }
+});

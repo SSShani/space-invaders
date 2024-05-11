@@ -12,6 +12,7 @@
 
 		<div class="game-info">
 			<h1 class="score">Score: <span>0</span></h1>
+			<h1 class="live">Live: <span>3</span></h1>
 			<!-- <h1 class="level">Level: <span>Easy</span></h1> -->
 		</div>
 
@@ -24,24 +25,25 @@
 			<button class="start-btn" onclick="startGame(this)">Start</button>
 			<!-- <button class="start-btn" onclick="startGame(this); event.preventDefault();">Start</button> -->
 		</div>
-
-
-
 		  <!-- <div >
 			<button class="button" onclick="test1()">Test1</button>
 			<button class="button" onclick="test2()">Test2</button>
 		  </div> -->
-		
+		  <button id="changeBackgroundButton">"Brightness"</button>
+		  <button class="Sound" onclick="ChangeSound(this)">Sound</button>
+
 		  <div class="levels">
 			<button class="level-btn" onclick="changeSpeed(this)">Easy</button>
 			<button class="level-btn" onclick="changeSpeed(this)">Medium</button>
 			<button class="level-btn" onclick="changeSpeed(this)">Hard</button>
 		</div>
+
 		<div class="footer">
-		<span>🛸:  Right/Left            | </span>
-			<span>Space:  Shoot 💥           |</span>
-			<span>N:  blast neighbors 💥💥        |</span>
-			<span>X:  Super Mode <span class="SuperMode">- 3 -</span>          |</span>
+		<span>🛸:  Right / Left            | </span>
+			<span>💥 Space:  Shoot           |</span>
+			<span>✨ N:  blast neighbors        |</span>
+			<span>🔥 X:  Super Mode  <span class="SuperMode">- 3 -</span>          |</span>
+			<span>🧛 z:  Shields            | </span>
 		</div>
 		SuperMode
 		<table class="board-container">
