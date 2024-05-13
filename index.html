@@ -1,61 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-		<title>space-invaders</title>
-		<link rel="stylesheet" href="css/app.css" />
-	</head>
 
-	<body onload="init()" onkeydown="onKeyDown(event)">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<title>space-invaders</title>
+	<link rel="stylesheet" href="css/app.css" />
+</head>
 
-		<div class="game-info">
-			<h1 class="score">Score: <span>0</span></h1>
-			<h1 class="live">Live: <span>3</span></h1>
-			<!-- <h1 class="level">Level: <span>Easy</span></h1> -->
-		</div>
+<body onload="init()" onkeydown="onKeyDown(event)">
 
-		<div class="modal">
-			<p></p>
-			<button class="button" onclick="restartGame()">Go for another round!</button>
-		  </div>
+	<div class="game-info">
+		<h1 class="score">Score: <span>0</span></h1>
+		<h1 class="live">Live: <span>3</span></h1>
+		<!-- <h1 class="level">Level: <span>Easy</span></h1> -->
+	</div>
 
-		  <div class="start">
-			<button class="start-btn" onclick="startGame(this)">Start</button>
-			<!-- <button class="start-btn" onclick="startGame(this); event.preventDefault();">Start</button> -->
-		</div>
-		  <!-- <div >
+	<div class="modal">
+		<p></p>
+		<button class="button" onclick="restartGame()">Go for another round!</button>
+	</div>
+
+	<div class="start">
+		<button class="start-btn" onclick="startGame(this)">Start</button>
+		<!-- <button class="start-btn" onclick="startGame(this); event.preventDefault();">Start</button> -->
+	</div>
+	<!-- <div >
 			<button class="button" onclick="test1()">Test1</button>
 			<button class="button" onclick="test2()">Test2</button>
 		  </div> -->
-		  <button id="changeBackgroundButton">"Brightness"</button>
-		  <button class="Sound" onclick="ChangeSound(this)">Sound</button>
+	<button id="changeBackgroundButton">"Brightness"</button>
+	<!-- <button class="Sound" onclick="ChangeSound()">Sound</button> -->
 
-		  <div class="levels">
-			<button class="level-btn" onclick="changeSpeed(this)">Easy</button>
-			<button class="level-btn" onclick="changeSpeed(this)">Medium</button>
-			<button class="level-btn" onclick="changeSpeed(this)">Hard</button>
-		</div>
+	<div class="levels">
+		<button class="level-btn" onclick="changeSpeed(this)">Easy</button>
+		<button class="level-btn" onclick="changeSpeed(this)">Medium</button>
+		<button class="level-btn" onclick="changeSpeed(this)">Hard</button>
+	</div>
 
-		<div class="footer">
-		<span>🛸:  Right / Left            | </span>
-			<span>💥 Space:  Shoot           |</span>
-			<span>✨ N:  blast neighbors        |</span>
-			<span>🔥 X:  Super Mode  <span class="SuperMode">- 3 -</span>          |</span>
-			<span>🧛 z:  Shields            | </span>
-		</div>
-		SuperMode
-		<table class="board-container">
-			<tbody class="board"></tbody>
-			</table>
-		
-			
+	<div class="footer">
+		<span>🛸: Right / Left | </span>
+		<span>💥 Space: Shoot |</span>
+		<span>✨ N: blast neighbors |</span>
+		<span>🔥 X: Super Mode <span class="SuperMode">- 3 -</span> |</span>
+		<span>🧛 z: Shields | </span>
+	</div>
+	SuperMode
+	<table class="board-container">
+		<tbody class="board"></tbody>
+	</table>
 
 
-		<script src="js/utils.js"></script>
-		<script src="js/alien.js"></script>
-		<script src="js/hero.js"></script>
-		<script src="js/game.js"></script>
-	</body>
+
+
+	<script src="js/utils.js"></script>
+	<script src="js/alien.js"></script>
+	<script src="js/hero.js"></script>
+	<script src="js/game.js"></script>
+</body>
+
 </html>

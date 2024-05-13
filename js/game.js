@@ -4,43 +4,25 @@ var ALIEN_ROW_COUNT = 3
 const HERO = '🛸'
 const ALIEN = '👽'
 const LASER = ' 📍'
-const SUPERLASER= '🔥'
+const SUPERLASER = '🔥'
 const EXPLOSION = '💥'
 const CANDY = '🍭'
-const ROCK ='❄️'
+const ROCK = '❄️'
 var gBoard;
 const SKY = "SKY"
 const BOTTOM = "BOTTOM"
-const BUNKER='BUNKER'
-var gAliensTopRowIdx=0
-var gAliensBottomRowIdx =ALIEN_ROW_COUNT-1
-
-function init() {
-    console.log('init ')
-    gBoard = createBoard()
-    createAliens(gBoard)
-    console.log(gGame.alienCount)
-    createHero(gBoard)
-    createBunkers()
-    renderBoard(gBoard)
-    console.table(gBoard)
-}
-
+const BUNKER = 'BUNKER'
+var gAliensTopRowIdx = 0
+var gAliensBottomRowIdx = ALIEN_ROW_COUNT - 1
 var gGame = {
     isOn: false,
     alienCount: 0,
     score: 0,
-    blowUpNeighborsisOn:false,
-    isSuperMode:false,
-    Sound:true
+    blowUpNeighborsisOn: false,
+    isSuperMode: false,
+    Sound: true
 }
-function startRocks(){
-    console.log('testt')
-gAliensRockInterval=setInterval(() => {
-    throwRocks()  
-  },5000);
-}
-// Render the board as a <table> to the page 
+
 function renderBoard(board) {
     console.log('renderBoard ')
     var strHTML = ''
@@ -58,14 +40,10 @@ function renderBoard(board) {
     elBoard.innerHTML = strHTML
 }
 
-
-
-
-// position such as: {i: 2, j: 7} 
 function updateCell(pos, gameObject = null) {
     gBoard[pos.i][pos.j].gameObject = gameObject
     var elCell = getElCell(pos)
-    elCell.innerHTML = gameObject || ""
+    elCell.innerHTML = gameObject || ''
 }
 
 function createBoard() {
@@ -78,26 +56,51 @@ function createBoard() {
     }
     return board
 }
-// 
+
 function createCell(type = SKY, gameObject = null) {
     return {
-        type: type,
-        gameObject: gameObject
+        type,
+        gameObject
     }
 }
+
+function init() {
+    console.log('init ')
+    gBoard = createBoard()
+    createAliens(gBoard)
+    console.log(gGame.alienCount)
+    createHero(gBoard)
+    createBunkers()
+    renderBoard(gBoard)
+    console.table(gBoard)
+}
+
 function GameOver(gameResult = false) {
+    if (gameResult) {
+        if (gGame.Sound) {
+            var audio = new Audio("sounds/Win.wav")
+            audio.play();
+        }
+    } else {
+        if (gGame.Sound) {
+            var audio = new Audio("sounds/gameOver.wav")
+            audio.play();
+        }
+
+    }
+    
     clearInterval(gIntervalAliens)
     clearInterval(gCandyInterval)
     clearInterval(gAliensRockInterval)
     clearInterval(gIntervalRocks);
+    dataReset()
+    gGame.isOn = false
     console.log('GameOver', gameResult)
     document.querySelector('.modal').style.display = "block"
-    gGame.isOn = false
-
-    if (gameResult) handleVictory( )
-    else handleDefeat( )
-
+    if (gameResult) handleVictory()
+    else handleDefeat()
 }
+
 function handleVictory() {
     var modalText = document.querySelector('.modal p');
     modalText.innerText = "Congratulations! You won!";
@@ -105,108 +108,103 @@ function handleVictory() {
 
 function handleDefeat() {
     var modalText = document.querySelector('.modal p');
-    modalText.innerText = "Oh you lost"}
+    modalText.innerText = "Oh you lost"
+}
 
 function restartGame() {
     document.querySelector('.modal').style.display = "none"
-    gGame.alienCount = 0
-    restartScore()
-    restartalienXBounds()
+    const startBtn = document.querySelector('.start-btn');
+    startBtn.setAttribute("onclick", "startGame(this)");
+    startBtn.disabled = false;
     init()
 
 }
 
-
-
-function restartScore(){
-    gGame.score = 0
-    const elScore = document.querySelector('.score span')
-     elScore.innerText = gGame.score
-
+function dataReset() {
+    restartScore()
+    gIsAlienFreeze = false
+    restartalienXBounds()
 }
 
-function startGame(elBtn){
+function startGame(elBtn) {
     console.log('startt')
+    playBackgroundMusic()
     elBtn.removeAttribute("onclick");
     elBtn.disabled = true;
-      init()
-     
+    //   init()
     gGame.isOn = true
-    gIsAlienFreeze=false
     moveAliens()
     startRocks()
- }
+}
 
-
- function changeSpeed(elBtn) {
+function changeSpeed(elBtn) {
     var level = elBtn.innerText;
     console.log(level);
     switch (level) {
-      case "Medium":
-        MediumLevel();
-        break;
-      case "Easy":
-        LowLevel();
-        break;
+        case "Medium":
+            MediumLevel();
+            break;
+        case "Easy":
+            LowLevel();
+            break;
         case "Hard":
             HighLevel();
             break;
-      default:
-        MediumLevel();
-        break;
+        default:
+            MediumLevel();
+            break;
     }
-    // const elLevel = document.querySelector(".level span");
-    // elLevel.innerText = level;
-  }
-  function MediumLevel(){
-    ALIEN_SPEED = 500;
-    ALIEN_ROW_COUNT=3
-    createAliens(gBoard)
-  }
 
-  function  HighLevel(){
-    ALIEN_SPEED = 300;
-    ALIEN_ROW_COUNT=4
-
-    gAliensBottomRowIdx=3
-    init()
-    // createAliens(gBoard)
-  }
-
-  function LowLevel(){
-    ALIEN_SPEED = 800;
-    ALIEN_ROW_COUNT=2
-    gAliensBottomRowIdx=1
-    init()
-  }
-
-
-//   function ChangeSound(){
-//     var audio = new Audio(
-// if (gGame.Sound){
-
-// }
-// gGame.Sound=!gGame.Sound
-
-//   }
-
-
-
-
-
-function test1(){
-    gIsAlienFreeze = true;
 }
 
+function MediumLevel() {
+    ALIEN_SPEED = 500;
+    ALIEN_ROW_COUNT = 3
+    createAliens(gBoard)
+}
+
+function HighLevel() {
+    ALIEN_SPEED = 300;
+    ALIEN_ROW_COUNT = 4
+
+    gAliensBottomRowIdx = 3
+    init()
+    // createAliens(gBoard)
+}
+
+function LowLevel() {
+    ALIEN_SPEED = 800;
+    ALIEN_ROW_COUNT = 2
+    gAliensBottomRowIdx = 1
+    init()
+}
+
+function playBackgroundMusic() {
+    if (gGame.Sound) {
+        var audio = new Audio("sounds/background.wav")
+        audio.play();
+    }
+}
+
+function startRocks() {
+    // console.log('testt')
+    gAliensRockInterval = setInterval(() => {
+        throwRocks()
+    }, 5000);
+}
 
 var backgroundImageChanged = false;
-var changeBackgroundButton = document.getElementById("changeBackgroundButton");
-changeBackgroundButton.addEventListener("click", function() {
+var changeBackgroundButton = document.getElementById("changeBackgroundButton")
+changeBackgroundButton.addEventListener("click", function () {
     if (!backgroundImageChanged) {
-        document.body.style.backgroundImage = "url('../img/cpaselight.img')";
+        document.body.style.backgroundImage = "url('../img/istockphoto.jpg')";
         backgroundImageChanged = true;
     } else {
         document.body.style.backgroundImage = "url('../img/space.jpg')";
         backgroundImageChanged = false;
     }
 });
+
+// function test1(){
+//     gIsAlienFreeze = true;
+// }

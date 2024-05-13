@@ -1,21 +1,21 @@
 'use strict'
 // Returns a new cell object. e.g.: {type: SKY, gameObject: ALIEN} 
-function createCell(gameObject = null) { 
-  return { 
-    type: SKY, 
-    gameObject: gameObject 
-  } 
-} 
- 
+function createCell(gameObject = null) {
+    return {
+        type: SKY,
+        gameObject: gameObject
+    }
+}
+
 // function getElCell(pos) { 
 //   return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`) 
 // } 
- 
+
 function getElCell(pos) {
     return document.querySelector(`[data-i='${pos.i}'][data-j='${pos.j}']`);
-  }
+}
 
-  function getRandomInt(x, y) {
+function getRandomInt(x, y) {
     return Math.floor(Math.random() * (y - x + 1)) + x;
 }
 
@@ -50,19 +50,20 @@ function countNeighbors(rowIdx, colIdx, mat) {
             if (mat[i][j] === LIFE) neighborsCount++
         }
     }
-    return neighborsCount}
+    return neighborsCount
+}
 
- function createMat(ROWS, COLS) {
-        const mat = []
-        for (var i = 0; i < ROWS; i++) {
-            const row = []
-            for (var j = 0; j < COLS; j++) {
-                row.push('')
-            }
-            mat.push(row)
+function createMat(ROWS, COLS) {
+    const mat = []
+    for (var i = 0; i < ROWS; i++) {
+        const row = []
+        for (var j = 0; j < COLS; j++) {
+            row.push('')
         }
-        return mat
+        mat.push(row)
     }
+    return mat
+}
 
 
 function showModal() {

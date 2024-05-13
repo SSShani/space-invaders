@@ -1,12 +1,11 @@
 const LASER_SPEED = 80
 var gHero = { pos: { i: 12, j: 5 }, isShoot: false, live: 3 }
+const bunkerStones = [3, 4, 7, 8, 9, 12, 13]
 var SuperModecount = 3;
 var gRegularLaserInterval;
 
 function createHero(board) {
-  // console.log('createHero ')
   board[gHero.pos.i][gHero.pos.j].gameObject = HERO
-  // console.log(board[gHero.pos.i][gHero.pos.j].gameObject )
 }
 
 function onKeyDown(ev) {
@@ -37,16 +36,12 @@ function onKeyDown(ev) {
 }
 
 function createBunkers() {
-  
-    var bunkerStones = [ 3, 4, 7,8,9,12,13]
-    var type =BUNKER
-    for (var i = 0; i < bunkerStones.length; i++) {
-      var location=bunkerStones[i]
-          gBoard[BOARD_SIZE-3][location] = createCell(type, null);
-
-        }
-    }
-   
+  var type = BUNKER
+  for (var i = 0; i < bunkerStones.length; i++) {
+    var location = bunkerStones[i]
+    gBoard[BOARD_SIZE - 3][location] = createCell(type, null);
+  }
+}
 
 function moveHero(dir) {
 
@@ -60,8 +55,6 @@ function moveHero(dir) {
   // gBoard[gHero.pos.i][gHero.pos.j] .gameObject=null
   // gHero.pos.j=gHero.pos.j+dir
 }
-
-
 
 
 
@@ -117,20 +110,28 @@ function moveHero(dir) {
 //       updateCell(pos, LASER);
 //     }
 // }
-
+cv
+function isBunker() {
+  const location = gHero.pos.j;
+  var ans = false
+  for (var i = 0; i < bunkerStones.length; i++) {
+    if (location == bunkerStones[i]) ans = true
+  }
+  return ans
+}
 
 function shoot() {
   if (gGame.isOn && !gHero.isShoot) {
+    if (isBunker()) return
     console.log('shoot')
     gHero.isShoot = true;
     var laserPos = { i: gHero.pos.i, j: gHero.pos.j };
     blinkLaser(laserPos)
     if (gGame.isSuperMode) {
-        gSuperLaserInterval = setInterval(() => {
-            blinkLaser(laserPos);
-        }, 70);
-    }else
-    {
+      gSuperLaserInterval = setInterval(() => {
+        blinkLaser(laserPos);
+      }, 70);
+    } else {
       gRegularLaserInterval = setInterval(() => {
         blinkLaser(laserPos);
       }, 200);
@@ -138,59 +139,49 @@ function shoot() {
   }
 }
 
-
-
-
 function blinkLaser(pos) {
   const nextPos = { i: pos.i - 1, j: pos.j };
   const nextCell = gBoard[nextPos.i][nextPos.j].gameObject
 
   if (!nextPos.i || nextCell === ALIEN) {
-    if(gGame.isSuperMode)clearInterval(gSuperLaserInterval);
+    if (gGame.isSuperMode) clearInterval(gSuperLaserInterval);
     else clearInterval(gRegularLaserInterval);
     gGame.isSuperMode = false;
     gHero.isShoot = false;
     updateCell(pos);
     if (!pos.i) {//end
-    gGame.blowUpNeighborsisOn=false
-    return;}
+      gGame.blowUpNeighborsisOn = false
+      return;
+    }
 
     else if (nextCell === ALIEN) {
-      if (gGame.blowUpNeighborsisOn == true) 
-      {
-            blowUpNeighbors(nextPos)
-        gGame.blowUpNeighborsisOn=false
-        } else 
-        {
+      if (gGame.blowUpNeighborsisOn == true) {
+        blowUpNeighbors(nextPos)
+        gGame.blowUpNeighborsisOn = false
+      } else {
         handleAlienHit(nextPos, ALIEN)
       }
     } else if (nextCell === CANDY) {
       handleAlienHit(nextPos, CANDY)
+    } else if (nextCell === ROCK) {
+      console.log(' ROCKROCKROCK')
+      handleAlienHit(nextPos, ROCK)
     }
 
   } else {
-    if (pos.i !== gHero.pos.i) updateCell(pos);
-    --pos.i;
+    if (pos.i !== gHero.pos.i) updateCell(pos)
+    --pos.i
     if (gGame.isSuperMode) {
       updateCell(pos, SUPERLASER)
     } else
-      updateCell(pos, LASER);
+      updateCell(pos, LASER)
   }
 }
-
-
-
-
-
-
-
 
 function updateNeighbors() {
   // console.log('bbb')
   gGame.blowUpNeighborsisOn = true
   shoot()
-
-
 }
 
 function blowUpNeighbors(Pos) {
@@ -205,8 +196,7 @@ function blowUpNeighbors(Pos) {
 }
 
 function SuperMode() {
-
-  if (SuperModecount == 0) return
+  if (SuperModecount === 0) return
   gGame.isSuperMode = true
   shoot()
   updateSuperModecount()
@@ -214,7 +204,7 @@ function SuperMode() {
 
 function updateSuperModecount() {
   SuperModecount--
-  var Text
+
   const elCount = document.querySelector('.SuperMode ')
   // for(var i=0;i<SuperModecount;i++){
   //   Text -= '🔥'}

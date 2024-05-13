@@ -7,12 +7,6 @@ var gCandyInterval;
  var gAliensRockInterval
  var gIntervalRocks
 
-//  const ALIEN = {
-//   1:'👽',
-// 2:'👻',
-// 3:'👾',
-// 4:' 👹'}
-
 var alienXBounds = {
   ifToRight: true,
   ifToDown:false,
@@ -32,32 +26,44 @@ function restartalienXBounds(){
 }
 
 function createAliens(board) {
+  gGame.alienCount=0
     for (var j = 0; j < ALIEN_ROW_COUNT; j++){
     for (var i = 0; i < ALIEN_ROW_LENGTH; i++) {
         board[j][i].gameObject=ALIEN
         gGame.alienCount++
-        // createCell(HERO)
-        // console.log(board[j][i].gameObject)
     }}
-    // console.log('createAliens ')
 } 
-
 
 function handleAlienHit(pos,Obj) {
 
-  var upScore
+  var upScore=0
     if (Obj === ALIEN) {
+      if (gGame.Sound){
+        var audio = new Audio("sounds/Explosion.wav")
+        audio.play();}
+
       updateBound(pos)
        upScore = 10;
        gGame.alienCount--
-    } else {
+    }
+    else { if (Obj === ROCK){
+      console. log(' ROCKROCKROCK')
+clearInterval(gIntervalRocks)
+    }
+
+     else {
+
+      if (gGame.Sound){
+        var audio = new Audio("sounds/candy.wav")
+        audio.play();}
+
       upScore = 50;
       gIsAlienFreeze = true;
       setTimeout(() => {
         gIsAlienFreeze = false;
       }, 5000);
-    }
-  
+    }}
+    
     updateScore(upScore);
     updateCell(pos, EXPLOSION);
     setTimeout(() => {
@@ -66,7 +72,6 @@ function handleAlienHit(pos,Obj) {
 
     if(gGame.alienCount==0)GameOver(true)
 } 
-
 
 function updateBound(pos){
 if (pos.j==alienXBounds.left){
@@ -86,7 +91,6 @@ else
 }
  }
 }
-
 
 function updateScore(upScore){
   const elScore = document.querySelector('.score span')
@@ -140,8 +144,6 @@ function shiftBoardDown(board, fromI, toI) {
     console.log(alienXBounds.ifToRight )
 }
 
-
-
 function shiftBoardLeft(board, fromI, toI) {
   for (var i = fromI; i <= toI; i++) {
       for (var j = 0; j < BOARD_SIZE - 1; j++) {
@@ -165,18 +167,18 @@ function shiftBoardLeft(board, fromI, toI) {
  console.log(alienXBounds.ifToRight)
 }
 
-// alienXBounds
+function restartScore(){
+  gGame.score = 0
+  const elScore = document.querySelector('.score span')
+   elScore.innerText = gGame.score
 
-
+}
 
 function moveAliens() {
   if (!gGame.isOn) return;
- 
   gIntervalAliens = setInterval(() => {
     moveDirectionHandler()
   }, ALIEN_SPEED);
-
- 
 }
 
 function moveDirectionHandler(){
@@ -184,7 +186,6 @@ function moveDirectionHandler(){
   if(alienXBounds.ifToDown )shiftBoardDown(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
     else{
          if(alienXBounds.ifToRight ) shiftBoardRight(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)
-  
   else {
     if(!alienXBounds.ifToRight )shiftBoardLeft(gBoard, gAliensTopRowIdx, gAliensBottomRowIdx)}
   }
@@ -198,16 +199,14 @@ function candyAppear(){
     updateCell(candyPos,'')
   }, 5000);
 }
-
-
-
 function throwRocks() {
   var pos = getAlienPos(gBoard);
   // blinkRock(pos);
+  const nextPos = { i: pos.i - 1, j: pos.j };
   gIntervalRocks  = setInterval(() => {
     console.log('throwRocks')
     // pos = { i: pos.i + 1, j: pos.j };
-    blinkRock(pos);
+    blinkRock(nextPos);
   }, 400);
 }
 
@@ -239,9 +238,6 @@ function throwRocks() {
 //   updateCell(pos);
 // }
 
-
-
-
 function blinkRock(pos) {
   console.log("blinkRock" )
 const nextPos = { i: pos.i+ 1, j: pos.j };
@@ -266,8 +262,8 @@ if (nextGameObject===HERO || nextType ===BOTTOM||nextType===BUNKER) {
   pos.i++
     updateCell(pos,ROCK);
 }
-}}
-
+}
+}
 
 function Bunkerhit(nextPos, nextType){
   console.log( 'Bunkerhit')
@@ -278,13 +274,6 @@ function Bunkerhit(nextPos, nextType){
   }
     
 }
-
-
-
-
-
-
-
 
 function InjuryToHero(pos){
   console.log("InjuryToHero");
@@ -301,24 +290,11 @@ function InjuryToHero(pos){
     gHero.live--
     console.log('live:', gHero.live)
     // updateCell(pos, HERO)
-
       const elLive = document.querySelector('.live span')
      elLive.innerText = gHero.live
     }
 
   }
-
- 
-
-
-
-
-
-
-
-
-
-
 
 function getAlienPos(board) {
   const aliensPoses = [];
@@ -335,13 +311,18 @@ function getAlienPos(board) {
   return aliensPoses[randomIdx];
 }
 
+// function isAlien(Obj ){
+//   console.log('isAlien')
+//   for (var j = 0; j < 4; j++){
+//      var key = j;
+//      Obj=ALIEN[key]
+//      return true
+//     }
+//     return false
+// }
 
-function isAlien(Obj ){
-  console.log('isAlien')
-  for (var j = 0; j < 4; j++){
-     var key = j;
-     Obj=ALIEN[key]
-     return true
-    }
-    return false
-}
+//  const ALIEN = {
+//     1:'👽',
+//   2:'👻',
+//   3:'👾',
+//   4:' 👹'}
