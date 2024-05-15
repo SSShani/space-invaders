@@ -83,12 +83,16 @@ td {
         top: 15px;
         left: 50%;
         transform: translateX(-50%);
+        margin-bottom: 0px;
 }
 
 .footer span {
-    margin-bottom: 10px;
-    font-size: 25px;
+    margin-bottom: 0px;
+    font-size: 20px;
         margin-bottom: 10px;
+        display: inline-block;
+        /* height: 0; */
+        line-height: 1;
 }
 
 .footer span:not(:last-child) {
