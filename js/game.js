@@ -197,10 +197,10 @@ var backgroundImageChanged = false;
 var changeBackgroundButton = document.getElementById("changeBackgroundButton")
 changeBackgroundButton.addEventListener("click", function () {
     if (!backgroundImageChanged) {
-        document.body.style.backgroundImage = "url('../img/istockphoto.jpg')";
+        document.body.style.backgroundImage =  "url('img/istockphoto.jpg')";
         backgroundImageChanged = true;
     } else {
-        document.body.style.backgroundImage = "url('../img/space.jpg')";
+        document.body.style.backgroundImage = "url('img/space.jpg')";
         backgroundImageChanged = false;
     }
 });
